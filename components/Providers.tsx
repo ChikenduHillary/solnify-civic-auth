@@ -24,7 +24,7 @@ const ReactQueryClientProvider = ({
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ConnectionProvider endpoint={clusterApiUrl("devnet")}>
+      <ConnectionProvider endpoint={clusterApiUrl("devnet")}>1
         <WalletProvider wallets={[]} autoConnect>
           <WalletModalProvider>
             <CivicAuthProvider>
