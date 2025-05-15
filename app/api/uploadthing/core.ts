@@ -1,5 +1,6 @@
 import { createUploadthing, type FileRouter } from "uploadthing/next";
 import { UploadThingError } from "uploadthing/server";
+/* eslint-disable @typescript-eslint/no-unused-vars */
 
 const f = createUploadthing();
 
