@@ -20,6 +20,14 @@ import {
   useConnection,
 } from "@solana/wallet-adapter-react";
 
+import { Web3UserContextType } from "@civic/auth-web3";
+
+type ExtendedWeb3UserContextType = Web3UserContextType & {
+  solana?: {
+    address: string;
+  };
+};
+
 const WalletMultiButton = dynamic(
   () =>
     import("@solana/wallet-adapter-react-ui").then(
@@ -29,26 +37,13 @@ const WalletMultiButton = dynamic(
 );
 
 export function Navbar() {
-  const userContext = useUser();
+  const userContext = useUser() as ExtendedWeb3UserContextType;
   const userId = userContext?.user?.id;
   const router = useRouter();
   const { connect, connectors } = useConnect();
   const [copied, setCopied] = useState(false);
 
-  const useBalance = () => {
-    const [balance, setBalance] = useState<number>();
-    const { connection } = useConnection();
-    const publicKey = userContext?.solana?.address;
-
-    if (publicKey) {
-      connection.getBalance(publicKey).then(setBalance);
-    }
-
-    return balance;
-  };
-
   const publicKey = userContext?.solana?.address;
-  const balance = useBalance();
 
   const handleCopy = () => {
     if (publicKey) {
