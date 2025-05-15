@@ -19,6 +19,7 @@ type ExtendedWeb3UserContextType = Web3UserContextType & {
   solana?: {
     address: string;
   };
+  isAuthenticated: boolean;
 };
 
 export function Navbar() {
@@ -28,6 +29,7 @@ export function Navbar() {
   const [copied, setCopied] = useState(false);
 
   const walletCreationInProgress = userContext?.walletCreationInProgress;
+  const isAuthenticated = userContext?.isAuthenticated;
   const publicKey = userContext?.solana?.address;
   console.log(userContext);
 
@@ -90,7 +92,7 @@ export function Navbar() {
         <div className="flex items-center gap-2">
           <div className="flex gap-2 items-center">
             <UserButton className=" h-[35px] civic-user-button hover:text-black text-sm flex items-center justify-center" />
-            {publicKey ? (
+            {publicKey && isAuthenticated ? (
               <div className="flex flex-col items-start gap-2">
                 <button
                   onClick={handleCopy}
@@ -100,7 +102,7 @@ export function Navbar() {
                   {copied ? "Copied!" : shortenAddress(publicKey)}
                 </button>
               </div>
-            ) : walletCreationInProgress ? (
+            ) : isAuthenticated && !publicKey ? (
               <button
                 onClick={handleCopy}
                 className="flex items-center gap-2 bg-backgroundSecondary border border-gray-700 text-white px-3 py-1 rounded-md hover:bg-gray-700 transition"
@@ -112,7 +114,7 @@ export function Navbar() {
                 onClick={handleCopy}
                 className="flex items-center gap-2 bg-backgroundSecondary border border-gray-700 text-white px-3 py-1 rounded-md hover:bg-gray-700 transition"
               >
-                Log in to create wallet
+                Sign in to create wallet
               </button>
             )}
           </div>
