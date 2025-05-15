@@ -12,13 +12,6 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
 import { userHasWallet } from "@civic/auth-web3";
-import { useAccount, useConnect, useBalance } from "wagmi";
-import {
-  ConnectionProvider,
-  WalletProvider,
-  useWallet,
-  useConnection,
-} from "@solana/wallet-adapter-react";
 
 import { Web3UserContextType } from "@civic/auth-web3";
 
@@ -40,7 +33,6 @@ export function Navbar() {
   const userContext = useUser() as ExtendedWeb3UserContextType;
   const userId = userContext?.user?.id;
   const router = useRouter();
-  const { connect, connectors } = useConnect();
   const [copied, setCopied] = useState(false);
 
   const publicKey = userContext?.solana?.address;
@@ -78,7 +70,7 @@ export function Navbar() {
     };
 
     createWallet();
-  }, [userContext]);
+  }, [userContext, publicKey]);
 
   return (
     <nav className="flex items-center justify-between py-5 px-4 md:px-[50px]">
