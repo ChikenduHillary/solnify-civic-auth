@@ -21,21 +21,15 @@ type ExtendedWeb3UserContextType = Web3UserContextType & {
   };
 };
 
-const WalletMultiButton = dynamic(
-  () =>
-    import("@solana/wallet-adapter-react-ui").then(
-      (mod) => mod.WalletMultiButton
-    ),
-  { ssr: false }
-);
-
 export function Navbar() {
   const userContext = useUser() as ExtendedWeb3UserContextType;
   const userId = userContext?.user?.id;
   const router = useRouter();
   const [copied, setCopied] = useState(false);
 
+  const walletCreationInProgress = userContext?.walletCreationInProgress;
   const publicKey = userContext?.solana?.address;
+  console.log(userContext);
 
   const handleCopy = () => {
     if (publicKey) {
@@ -70,7 +64,7 @@ export function Navbar() {
     };
 
     createWallet();
-  }, [userContext, publicKey]);
+  }, [userContext, publicKey, walletCreationInProgress]);
 
   return (
     <nav className="flex items-center justify-between py-5 px-4 md:px-[50px]">
@@ -96,7 +90,7 @@ export function Navbar() {
         <div className="flex items-center gap-2">
           <div className="flex gap-2 items-center">
             <UserButton className=" h-[35px] civic-user-button hover:text-black text-sm flex items-center justify-center" />
-            {publicKey && (
+            {publicKey ? (
               <div className="flex flex-col items-start gap-2">
                 <button
                   onClick={handleCopy}
@@ -106,6 +100,20 @@ export function Navbar() {
                   {copied ? "Copied!" : shortenAddress(publicKey)}
                 </button>
               </div>
+            ) : walletCreationInProgress ? (
+              <button
+                onClick={handleCopy}
+                className="flex items-center gap-2 bg-backgroundSecondary border border-gray-700 text-white px-3 py-1 rounded-md hover:bg-gray-700 transition"
+              >
+                Creating wallet...
+              </button>
+            ) : (
+              <button
+                onClick={handleCopy}
+                className="flex items-center gap-2 bg-backgroundSecondary border border-gray-700 text-white px-3 py-1 rounded-md hover:bg-gray-700 transition"
+              >
+                Log in to create wallet
+              </button>
             )}
           </div>
         </div>
