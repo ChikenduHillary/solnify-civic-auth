@@ -1,6 +1,6 @@
 "use client";
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import Link from "next/link";
+/* eslint-disable  @typescript-eslint/no-explicit-any */ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Menu } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -30,11 +30,7 @@ export function Navbar() {
       userId: userId ? userId : "",
     });
   } catch (error: any) {
-    if (
-      error.message?.includes("User not found") &&
-      userContext?.isAuthenticated &&
-      userId
-    ) {
+    if (error.message?.includes("User not found") && userId) {
       router.push("/onboarding");
     } else {
       console.log("Error fetching user:", error.message || error);
