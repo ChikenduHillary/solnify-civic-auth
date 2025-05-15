@@ -1,4 +1,14 @@
 "use client";
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import {
+  generateSigner,
+  createSignerFromKeypair,
+  signerIdentity,
+  publicKey,
+} from "@metaplex-foundation/umi";
+import { createUmi } from "@metaplex-foundation/umi-bundle-defaults";
+import { create, fetchCollection } from "@metaplex-foundation/mpl-core";
+import { base58 } from "@metaplex-foundation/umi/serializers";
 
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
@@ -9,26 +19,41 @@ import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { UploadArea } from "@/components/create-nft/upload-area";
 import { Info, DollarSign, Globe } from "lucide-react";
-import { createUmi } from "@metaplex-foundation/umi-bundle-defaults";
-import { mplCore } from "@metaplex-foundation/mpl-core";
-import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { walletAdapterIdentity } from "@metaplex-foundation/umi-signer-wallet-adapters";
+import { useUser, useWallet } from "@civic/auth-web3/react";
 
 export default function CreateNFTPage() {
   const [, setFile] = useState<File | null>(null);
   // const [imageFile, setImageFile] = useState<File | null>(null);
   // const [imageUri] = await umi.uploader.upload([imageFile])
+  // const { publicKey } = useWallet();
 
-  const wallet = useWallet();
-  const { connection } = useConnection();
-  const umi = createUmi(connection)
-    .use(walletAdapterIdentity(wallet))
-    .use(mplCore());
+  //   const umi = createUmi("https://api.devnet.solana.com", "finalized");
+
+  // let keypair = umi.eddsa.createKeypairFromSecretKey(new Uint8Array(wallet));
+  // const adminSigner = createSignerFromKeypair(umi, keypair);
+  // umi.use(signerIdentity(adminSigner));
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission
-    console.log("Form submitted");
+
+    //   const asset = generateSigner(umi);
+    // console.log("This is your asset address", asset.publicKey.toString());
+
+    // Pass and Fetch the Collection
+    // const collection = await fetchCollection(umi, publicKey("72An7SwKfUmTAu34x2azX7tYwCBznFKxDR6RV9gxoQDr"))
+    // console.log(collection);
+
+    // Generate the Asset
+    // const tx = await create(umi, {
+    //     asset,
+    //     collection,
+    //     name: "My Asset",
+    //     uri: "https://example.com",
+    // }).sendAndConfirm(umi);
+
+    // Deserialize the Signature from the Transaction
+    // console.log("Asset Created: https://solana.fm/tx/" + base58.deserialize(tx.signature)[0] + "?cluster=devnet-alpha");
+    // console.log("Form submitted");
   };
 
   return (
