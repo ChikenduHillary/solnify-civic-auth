@@ -1,15 +1,24 @@
 "use client";
 /* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable  @typescript-eslint/no-explicit-any */ import Link from "next/link";
+/* eslint-disable  @typescript-eslint/no-explicit-any */
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Menu } from "lucide-react";
+import { Menu, Copy } from "lucide-react"; // Import the Copy icon
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { UserButton, useUser } from "@civic/auth-web3/react";
 import { api } from "@/convex/_generated/api";
 import { useQuery } from "convex/react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
+import { userHasWallet } from "@civic/auth-web3";
+import { useAccount, useConnect, useBalance } from "wagmi";
+import {
+  ConnectionProvider,
+  WalletProvider,
+  useWallet,
+  useConnection,
+} from "@solana/wallet-adapter-react";
 
 const WalletMultiButton = dynamic(
   () =>
@@ -23,7 +32,36 @@ export function Navbar() {
   const userContext = useUser();
   const userId = userContext?.user?.id;
   const router = useRouter();
-  console.log(userContext);
+  const { connect, connectors } = useConnect();
+  const [copied, setCopied] = useState(false);
+
+  const useBalance = () => {
+    const [balance, setBalance] = useState<number>();
+    const { connection } = useConnection();
+    const publicKey = userContext?.solana?.address;
+
+    if (publicKey) {
+      connection.getBalance(publicKey).then(setBalance);
+    }
+
+    return balance;
+  };
+
+  const publicKey = userContext?.solana?.address;
+  const balance = useBalance();
+
+  const handleCopy = () => {
+    if (publicKey) {
+      navigator.clipboard.writeText(publicKey).then(() => {
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000); // Reset copied state after 2 seconds
+      });
+    }
+  };
+
+  const shortenAddress = (address: string) => {
+    return `${address.slice(0, 5)}...${address.slice(-5)}`;
+  };
 
   try {
     const dbUser = useQuery(api.users.getUser, {
@@ -37,7 +75,15 @@ export function Navbar() {
     }
   }
 
-  useEffect(() => {}, [userContext]);
+  useEffect(() => {
+    const createWallet = async () => {
+      if (userContext.user && !userHasWallet(userContext)) {
+        await userContext.createWallet();
+      }
+    };
+
+    createWallet();
+  }, [userContext]);
 
   return (
     <nav className="flex items-center justify-between py-5 px-4 md:px-[50px]">
@@ -63,16 +109,17 @@ export function Navbar() {
         <div className="flex items-center gap-2">
           <div className="flex gap-2 items-center">
             <UserButton className=" h-[35px] civic-user-button hover:text-black text-sm flex items-center justify-center" />
-            <WalletMultiButton
-              style={{
-                backgroundImage:
-                  "linear-gradient(to right, var(--solana), var(--solana-light))",
-                color: "white",
-                height: "35px",
-                padding: "10px 10px",
-                borderRadius: "8px",
-              }}
-            />
+            {publicKey && (
+              <div className="flex flex-col items-start gap-2">
+                <button
+                  onClick={handleCopy}
+                  className="flex items-center gap-2 bg-backgroundSecondary border border-gray-700 text-white px-3 py-1 rounded-md hover:bg-gray-700 transition"
+                >
+                  <Copy className="w-4 h-4" />
+                  {copied ? "Copied!" : shortenAddress(publicKey)}
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>
