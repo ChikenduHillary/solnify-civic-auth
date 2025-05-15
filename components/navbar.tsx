@@ -71,7 +71,7 @@ export function Navbar() {
   return (
     <nav className="flex items-center justify-between py-5 px-4 md:px-[50px]">
       <div className="flex items-center gap-3">
-        <span className="text-xl font-bold">Solnify</span>
+       <Link href='/'>  <span className="text-xl font-bold">Solnify</span> </Link>
       </div>
 
       {/* Desktop Navigation */}

@@ -1,8 +1,20 @@
+"use client";
+
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
+import { useUser } from "@civic/auth-web3/react";
+import Link from "next/link";
+import { useEffect } from "react";
+
 // import { Avatar, AvatarImage } from "@/components/ui/avatar";
 
 export function Hero() {
+  const userContext = useUser();
+  const userId = userContext?.user?.id;
+  console.log("userId", userId);
+
+  useEffect(() => {}, [userId]);
+
   return (
     <div className="px-4 md:px-[50px] py-8 md:py-20">
       {/* Desktop Layout */}
@@ -19,24 +31,17 @@ export function Hero() {
             NFT Marketplace UI Created With Anima For Figma. Collect, Buy And
             Sell Art From More Than 20k NFT Artists.
           </p>
-          <Button className="bg-purple-600 hover:bg-purple-700 mb-12">
-            Get Started
-          </Button>
-
-          {/* <div className="flex gap-16">
-            <div>
-              <h3 className="text-3xl font-bold mb-1">240k+</h3>
-              <p className="text-gray-400">Total Sale</p>
-            </div>
-            <div>
-              <h3 className="text-3xl font-bold mb-1">100k+</h3>
-              <p className="text-gray-400">Auctions</p>
-            </div>
-            <div>
-              <h3 className="text-3xl font-bold mb-1">240k+</h3>
-              <p className="text-gray-400">Artists</p>
-            </div>
-          </div> */}
+          {userId ? (
+            <Link href={`/artist/${userId}`}>
+              <Button className="bg-purple-600 hover:bg-purple-700 mb-12">
+                Profile
+              </Button>
+            </Link>
+          ) : (
+            <Button className="bg-purple-600 hover:bg-purple-700 mb-12">
+              Get Started
+            </Button>
+          )}
         </div>
 
         <div className="relative">
@@ -49,15 +54,6 @@ export function Hero() {
               className="object-cover"
             />
           </div>
-          {/* <div className="bg-backgroundSecondary rounded-b-2xl p-5">
-            <h4 className="text-xl mb-2">Space Walking</h4>
-            <div className="flex items-center gap-2">
-              <Avatar className="h-6 w-6">
-                <AvatarImage src="/placeholder.svg" />
-              </Avatar>
-              <span className="text-sm">AnimaKid</span>
-            </div>
-          </div> */}
         </div>
       </div>
 
