@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 /* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable  @typescript-eslint/no-explicit-any */
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -24,7 +25,7 @@ type ExtendedWeb3UserContextType = Web3UserContextType & {
     address: string;
     wallet: any; // Adjust the type according to your wallet type
   };
-  isAuthenticated: boolean; 
+  isAuthenticated: boolean;
 };
 
 const WithdrawModal: React.FC<WithdrawModalProps> = ({ isOpen, onClose }) => {
@@ -33,15 +34,9 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({ isOpen, onClose }) => {
   const [isLoading, setIsLoading] = useState(false);
   const userContext = useUser() as ExtendedWeb3UserContextType;
 
-  
   console.log({ userContext });
 
-
   const wallet = userContext?.solana?.wallet;
-
-  if(!wallet) {
-    return (<div>laoding wallet...</div>)   
-  }
 
   const publicKey = new PublicKey(
     userContext?.solana?.address || wallet.publicKey?.toString() || ""
