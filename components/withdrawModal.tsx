@@ -10,23 +10,41 @@ import { useWallet } from "@solana/wallet-adapter-react";
 import { useSolBalance } from "@/helpers/getSolBalance";
 import { toast } from "sonner";
 import { transferSol } from "@/helpers/transfer_token";
+import { PublicKey } from "@solana/web3.js";
+import { useUser } from "@civic/auth-web3/react";
+import { Web3UserContextType } from "@civic/auth-web3";
 
 interface WithdrawModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
+type ExtendedWeb3UserContextType = Web3UserContextType & {
+  solana?: {
+    address: string;
+  };
+  isAuthenticated: boolean;
+};
+
 const WithdrawModal: React.FC<WithdrawModalProps> = ({ isOpen, onClose }) => {
   const [amount, setAmount] = useState<string>("");
   const [address, setAddress] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
+  const userContext = useUser() as ExtendedWeb3UserContextType;
+  console.log({ userContext });
   const wallet = useWallet();
-  const { publicKey, signTransaction } = useWallet();
+
+  const publicKey = new PublicKey(
+    userContext?.solana?.address || wallet.publicKey?.toString() || ""
+  );
+  const balance = useSolBalance(publicKey);
+
+  console.log({ publicKey });
+
   const connection = new Connection(
     "https://api.devnet.solana.com",
     "confirmed"
   );
-  const balance = useSolBalance(publicKey);
 
   const handleWithdraw = async () => {
     if (!amount || !address) {
@@ -54,6 +72,9 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({ isOpen, onClose }) => {
       setIsLoading(true);
 
       //   console.log(`Withdrawing ${amount} SOL to ${address}`);
+      console.log(
+        `Withdrawing ${amount} SOL to ${address} from ${publicKey.toString()}`
+      );
       const signature = await transferSol(
         connection,
         wallet,
@@ -62,7 +83,7 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({ isOpen, onClose }) => {
       );
 
       toast.success(
-        `Withdrawal successful! Signature: ${signature.slice(0, 8)}...`
+        `Withdrawal successful! Signature: ${signature?.slice(0, 8)}...`
       );
 
       setAmount("");

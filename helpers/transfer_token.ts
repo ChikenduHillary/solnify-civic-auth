@@ -29,14 +29,21 @@ export async function transferSol(
     transaction.feePayer = fromWallet.publicKey;
     const latestBlockhash = await connection.getLatestBlockhash();
     transaction.recentBlockhash = latestBlockhash.blockhash;
+    console.log({ fromWallet });
 
     // Sign the transaction using the wallet adapter
+
+    if (!fromWallet?.signTransaction) {
+      return;
+    }
     const signedTransaction = await fromWallet.signTransaction(transaction);
 
     // Send the transaction
     const signature = await connection.sendRawTransaction(
       signedTransaction.serialize()
     );
+
+    console.log();
 
     // Confirm the transaction
     await connection.confirmTransaction({

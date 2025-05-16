@@ -11,9 +11,7 @@ import { useQuery } from "convex/react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
-import { userHasWallet } from "@civic/auth-web3";
-
-import { Web3UserContextType } from "@civic/auth-web3";
+import { userHasWallet, Web3UserContextType } from "@civic/auth-web3";
 
 type ExtendedWeb3UserContextType = Web3UserContextType & {
   solana?: {
