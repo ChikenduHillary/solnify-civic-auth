@@ -1,3 +1,6 @@
+"use client";
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -10,6 +13,7 @@ import {
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
+import WithdrawModal from "@/components/withdrawModal";
 
 interface ProfileStats {
   volume: string;
@@ -33,6 +37,14 @@ export function ArtistProfile({
   walletAddress,
 }: ArtistProfileProps) {
   const [copied, setCopied] = useState(false);
+  const [openWithdrawal, setOpenWithdrawal] = useState(true);
+
+  const closeWithdrawModal = () => {
+    setOpenWithdrawal(false);
+  };
+  const openWithdrawModal = () => {
+    setOpenWithdrawal(true);
+  };
 
   const handleCopy = () => {
     navigator.clipboard.writeText(walletAddress).then(() => {
@@ -46,7 +58,7 @@ export function ArtistProfile({
       {/* Banner */}
       <div className="h-[300px] relative">
         <Image
-          src={"/images/cover.jpg"}
+          src={"/images/imagecover.svg"}
           width={2000}
           height={2000}
           quality={1}
@@ -89,9 +101,10 @@ export function ArtistProfile({
               <Copy className="w-4 h-4 mr-2" />
               {copied ? "Copied!" : "Copy Address"}
             </Button>
-            <Button className="bg-purple-600 hover:bg-purple-700">
-              Follow
-            </Button>
+            <WithdrawModal
+              isOpen={openWithdrawal}
+              onClose={closeWithdrawModal}
+            />{" "}
           </div>
         </div>
 
