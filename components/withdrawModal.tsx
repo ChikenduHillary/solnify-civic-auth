@@ -22,8 +22,9 @@ interface WithdrawModalProps {
 type ExtendedWeb3UserContextType = Web3UserContextType & {
   solana?: {
     address: string;
+    wallet: any; // Adjust the type according to your wallet type
   };
-  isAuthenticated: boolean;
+  isAuthenticated: boolean; 
 };
 
 const WithdrawModal: React.FC<WithdrawModalProps> = ({ isOpen, onClose }) => {
@@ -31,8 +32,16 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({ isOpen, onClose }) => {
   const [address, setAddress] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
   const userContext = useUser() as ExtendedWeb3UserContextType;
+
+  
   console.log({ userContext });
-  const wallet = useWallet();
+
+
+  const wallet = userContext?.solana?.wallet;
+
+  if(!wallet) {
+    return (<div>laoding wallet...</div>)   
+  }
 
   const publicKey = new PublicKey(
     userContext?.solana?.address || wallet.publicKey?.toString() || ""

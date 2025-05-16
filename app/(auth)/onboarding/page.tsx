@@ -51,6 +51,10 @@ export default function OnboardingPage() {
     },
   });
 
+  const toaster = () => {
+    toast('dfjaoejroieoirer')
+  }
+
   const onSubmit = async (data: OnboardingFormValues) => {
     const { username, bio } = data;
 
@@ -92,7 +96,7 @@ export default function OnboardingPage() {
     <div className="min-h-screen bg-background text-white">
       <main className="container mx-auto px-4 py-8 md:py-16">
         <div className="max-w-2xl mx-auto">
-          <h1 className="text-4xl md:text-5xl font-bold mb-8 text-center">
+          <h1 className="text-4xl md:text-5xl font-bold mb-8 text-center" onClick={toaster}>
             Complete Your Profile
           </h1>
 

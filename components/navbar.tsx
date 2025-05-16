@@ -108,7 +108,7 @@ export function Navbar() {
                 onClick={handleCopy}
                 className="flex items-center gap-2 bg-backgroundSecondary border border-gray-700 text-white px-3 py-1 rounded-md hover:bg-gray-700 transition"
               >
-                Creating wallet...
+                Loading wallet...
               </button>
             ) : (
               <button
