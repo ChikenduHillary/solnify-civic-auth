@@ -1,36 +1,61 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🖼️ Solnify — The Next-Gen NFT Marketplace Powered by Civic Auth
 
-## Getting Started
+[![Built with Next.js](https://img.shields.io/badge/Built%20with-Next.js-000?logo=next.js&logoColor=white)](https://nextjs.org/)  
+[![Civic Integration](https://img.shields.io/badge/Authentication-Civic-blue)](https://www.civic.com/)  
+[![Launch Status](https://img.shields.io/badge/Status-In%20Development-orange)](#)
 
-First, run the development server:
+---
+
+**Solnify** is a decentralized NFT marketplace built on Solana, where creators and collectors meet in a clean, secure, and seamless environment. With **Civic Auth** integration, Solnify offers a frictionless onboarding experience using embedded wallets and real-human authentication — ensuring a bot-free, trusted marketplace.
+
+![Solnify Screenshot](public/images/solnify-preview.png)
+
+---
+
+## ✨ Features of Solnify
+
+- 🎨 Mint, list, and trade NFTs directly on Solana.
+- 👤 Auto-generated profiles using Civic-authenticated data.
+- 🛡️ Route protection and bot prevention via Civic middleware.
+- 🔐 Embedded wallets for users — no need for external wallet apps.
+- 🚀 Smooth UX for both Web3 natives and beginners.
+- 🧠 Built with Next.js, Tailwind CSS, and Civic SDK.
+
+---
+
+## 🛡️ Civic Authentication Integration
+
+**Solnify** leverages [**Civic Auth**](https://auth.civic.com/dashboard) to ensure that only real, verified users can access marketplace features. It removes the need for wallet extensions by embedding a wallet within the app, while securing all sensitive user flows like minting, profile creation, and account access.
+
+![Civic Screenshot](public/images/civic.png)
+
+### ✅ Why We Chose Civic
+
+- Verifies real users with zero data leaks
+- Prevents fake/bot accounts from abusing the platform
+- Provides users with instant Solana wallets
+- Simplifies the onboarding process drastically
+
+### 🔐 How Civic Works in Solnify
+
+- 🔓 On first visit, users authenticate through Civic.
+- 🧠 Civic middleware protects critical routes — if you're not logged in, you’re blocked from minting, trading, or viewing your dashboard.
+- 🧾 During profile creation, user data is pulled directly from Civic Auth.
+- 💼 If a user doesn't have a wallet, Civic auto-generates an **embedded Solana wallet** for them on login.
+- 🎁 All NFT actions — minting, purchasing, and transfers — happen through the user’s Civic wallet.
+
+> Civic makes Solnify human-first, secure, and ready for the next billion users on Solana.
+
+---
+
+## 🚀 Getting Started (For Developers)
+
+To run Solnify locally:
 
 ```bash
+# Install dependencies
+npm install
+
+# Start the development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
