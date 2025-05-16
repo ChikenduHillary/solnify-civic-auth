@@ -1,5 +1,5 @@
 "use client";
-/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable  @typescript-eslint/no-explicit-any */
 
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
@@ -38,7 +38,7 @@ type ExtendedWeb3UserContextType = Web3UserContextType & {
     address: string;
     wallet: any; // Adjust the type according to your wallet type
   };
-  isAuthenticated: boolean; 
+  isAuthenticated: boolean;
 };
 
 export function ArtistProfile({
@@ -52,10 +52,8 @@ export function ArtistProfile({
   const [openWithdrawal, setOpenWithdrawal] = useState(false);
   const userContext = useUser() as ExtendedWeb3UserContextType;
 
-   const publicKey = new PublicKey(
-      userContext?.solana?.address || ''
-    );
-    const balance = useSolBalance(publicKey);
+  const publicKey = new PublicKey(userContext?.solana?.address || "");
+  const balance = useSolBalance(publicKey);
 
   const closeWithdrawModal = () => {
     setOpenWithdrawal(false);
@@ -71,92 +69,92 @@ export function ArtistProfile({
     });
   };
 
-  return (<>
-  {openWithdrawal && <WithdrawModal
-              isOpen={openWithdrawal}
-              onClose={closeWithdrawModal}
-            />}
-    <div className="space-y-8">
-      {/* Banner */}
-      <div className="h-[300px] relative">
-        <Image
-          src={"/images/imagecover.svg"}
-          width={2000}
-          height={2000}
-          quality={1}
-          alt="cover photo"
-          className="w-[100vw] h-full object-cover"
-        />
-        <div className="absolute -bottom-16 left-4 md:left-8">
-          <Avatar className="h-32 rounded-3xl w-32 border-4 border-[#1F1D2B]">
-            <AvatarImage src={avatar} />
-          </Avatar>
+  return (
+    <>
+      {openWithdrawal && (
+        <WithdrawModal isOpen={openWithdrawal} onClose={closeWithdrawModal} />
+      )}
+      <div className="space-y-8">
+        {/* Banner */}
+        <div className="h-[300px] relative">
+          <Image
+            src={"/images/imagecover.svg"}
+            width={2000}
+            height={2000}
+            quality={1}
+            alt="cover photo"
+            className="w-[100vw] h-full object-cover"
+          />
+          <div className="absolute -bottom-16 left-4 md:left-8">
+            <Avatar className="h-32 rounded-3xl w-32 border-4 border-[#1F1D2B]">
+              <AvatarImage src={avatar} />
+            </Avatar>
+          </div>
         </div>
-      </div>
 
-      {/* Profile Info */}
-      <div className="pt-20 px-4 md:px-8">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-          <div>
-            <h1 className="text-4xl font-bold mb-4">{name}</h1>
-            <div className="flex gap-8 mb-6">
-              <div>
-                <p className="text-3xl font-bold">{stats.volume}+</p>
-                <p className="text-gray-400">Volume</p>
-              </div>
-              <div>
-                <p className="text-3xl font-bold">{stats.nftsSold}+</p>
-                <p className="text-gray-400">NFTs Sold</p>
-              </div>
-              <div>
-                <p className="text-3xl font-bold">{stats.followers}+</p>
-                <p className="text-gray-400">Followers</p>
+        {/* Profile Info */}
+        <div className="pt-20 px-4 md:px-8">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div>
+              <h1 className="text-4xl font-bold mb-4">{name}</h1>
+              <div className="flex gap-8 mb-6">
+                <div>
+                  <p className="text-3xl font-bold">{stats.volume}+</p>
+                  <p className="text-gray-400">Volume</p>
+                </div>
+                <div>
+                  <p className="text-3xl font-bold">{stats.nftsSold}+</p>
+                  <p className="text-gray-400">NFTs Sold</p>
+                </div>
+                <div>
+                  <p className="text-3xl font-bold">{stats.followers}+</p>
+                  <p className="text-gray-400">Followers</p>
+                </div>
               </div>
             </div>
+            <div className="flex gap-4 items-center">
+              <Button
+                variant="outline"
+                className="bg-backgroundSecondary border-gray-700"
+                onClick={handleCopy}
+              >
+                <Copy className="w-4 h-4 mr-2" />
+                {copied ? "Copied!" : "Copy Address"}
+              </Button>
+              <Button
+                variant="outline"
+                className="bg-backgroundSecondary border-gray-700"
+                onClick={openWithdrawModal}
+              >
+                Withdraw your earnings
+              </Button>
+            </div>
           </div>
-          <div className="flex gap-4 items-center">
-            <Button
-              variant="outline"
-              className="bg-backgroundSecondary border-gray-700"
-              onClick={handleCopy}
-            >
-              <Copy className="w-4 h-4 mr-2" />
-              {copied ? "Copied!" : "Copy Address"}
-            </Button>
-            <Button
-              variant="outline"
-              className="bg-backgroundSecondary border-gray-700"
-              onClick={openWithdrawModal}
-            > 
-              Withdraw your earnings
-            </Button>
+
+          {/* Wallet Address */}
+          <div className="mt-4">
+            <p className="text-gray-400 text-sm">Solana Balance</p>
+            <p className="text-white text-sm break-all">{balance}</p>
           </div>
-        </div>
 
-        {/* Wallet Address */}
-        <div className="mt-4">
-          <p className="text-gray-400 text-sm">Solana Balance</p>
-          <p className="text-white text-sm break-all">{balance}</p>
-        </div>
+          <div className="flex gap-4 my-8">
+            <Link href="#" className="text-gray-400 hover:text-white">
+              <Globe className="w-6 h-6" />
+            </Link>
+            <Link href="#" className="text-gray-400 hover:text-white">
+              <Discord className="w-6 h-6" />
+            </Link>
+            <Link href="#" className="text-gray-400 hover:text-white">
+              <Twitter className="w-6 h-6" />
+            </Link>
+            <Link href="#" className="text-gray-400 hover:text-white">
+              <Instagram className="w-6 h-6" />
+            </Link>
+          </div>
 
-        <div className="flex gap-4 my-8">
-          <Link href="#" className="text-gray-400 hover:text-white">
-            <Globe className="w-6 h-6" />
-          </Link>
-          <Link href="#" className="text-gray-400 hover:text-white">
-            <Discord className="w-6 h-6" />
-          </Link>
-          <Link href="#" className="text-gray-400 hover:text-white">
-            <Twitter className="w-6 h-6" />
-          </Link>
-          <Link href="#" className="text-gray-400 hover:text-white">
-            <Instagram className="w-6 h-6" />
-          </Link>
+          <p className="text-gray-400 max-w-2xl">{bio}</p>
         </div>
-
-        <p className="text-gray-400 max-w-2xl">{bio}</p>
       </div>
-    </div>
     </>
   );
 }
