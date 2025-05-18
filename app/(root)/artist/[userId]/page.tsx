@@ -32,7 +32,7 @@ export default function ArtistPage() {
   // Only fetch if userId exists, otherwise skip fetching
   const dbUser = useQuery(api.users.getUser, userId ? { userId } : "skip");
 
-  if (userId && dbUser === null) {
+  if (userId && !dbUser) {
     redirect("/");
   }
 
