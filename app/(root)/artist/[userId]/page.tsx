@@ -1,6 +1,6 @@
 "use client";
 
-import { useParams } from "next/navigation";
+import { redirect, useParams } from "next/navigation";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
@@ -8,7 +8,6 @@ import { ArtistProfile } from "@/components/artist-profile";
 import { NFTCard } from "@/components/nft-card";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
-import { useWallet } from "@solana/wallet-adapter-react";
 
 // Mock data
 const nfts = [
@@ -28,15 +27,13 @@ const nfts = [
 export default function ArtistPage() {
   const params = useParams<{ userId: string }>();
   const userId = params.userId;
-  const { publicKey } = useWallet();
-  console.log("Public Key:", publicKey?.toString());
   console.log({ userId });
 
   // Fetch user data from Convex
   const dbUser = useQuery(api.users.getUser, { userId: userId || "" });
 
-  if (!userId) {
-    return <div>Loading...</div>;
+  if (userId && !dbUser) {
+    redirect("/onboarding");
   }
 
   return (
