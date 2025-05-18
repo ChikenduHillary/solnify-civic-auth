@@ -1,6 +1,5 @@
 "use client";
 /* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable  @typescript-eslint/no-explicit-any */
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Menu, Copy } from "lucide-react"; // Import the Copy icon
@@ -44,17 +43,14 @@ export function Navbar() {
     return `${address.slice(0, 5)}...${address.slice(-5)}`;
   };
 
-  try {
-    const dbUser = useQuery(api.users.getUser, {
-      userId: userId ? userId : "",
-    });
-  } catch (error: any) {
-    if (error.message?.includes("User not found") && userId) {
+  // Only fetch if userId exists, otherwise skip fetching
+  const dbUser = useQuery(api.users.getUser, userId ? { userId } : "skip");
+
+  useEffect(() => {
+    if (dbUser === null && userId) {
       router.push("/onboarding");
-    } else {
-      console.log("Error fetching user:", error.message || error);
     }
-  }
+  }, [dbUser, userId, router]);
 
   useEffect(() => {
     const createWallet = async () => {

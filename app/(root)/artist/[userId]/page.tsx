@@ -29,11 +29,11 @@ export default function ArtistPage() {
   const userId = params.userId;
   console.log({ userId });
 
-  // Fetch user data from Convex
-  const dbUser = useQuery(api.users.getUser, { userId: userId || "" });
+  // Only fetch if userId exists, otherwise skip fetching
+  const dbUser = useQuery(api.users.getUser, userId ? { userId } : "skip");
 
-  if (userId && !dbUser) {
-    redirect("/onboarding");
+  if (userId && dbUser === null) {
+    redirect("/");
   }
 
   return (
@@ -51,7 +51,7 @@ export default function ArtistPage() {
               followers: "1000",
             }}
             bio={dbUser.bio || "No bio available."}
-            walletAddress={"wertwertwer"}
+            walletAddress={"N/A"}
           />
         ) : (
           <div>Loading artist profile...</div>
