@@ -48,7 +48,7 @@ export function Navbar() {
     const dbUser = useQuery(api.users.getUser, userId ? { userId } : "skip");
     console.log({ dbUser });
   } catch (error: any) {
-    if (error.message?.includes("User not found") && userId) {
+    if (error && userId) {
       router.push("/onboarding");
     } else {
       console.log("Error fetching user:", error.message || error);
