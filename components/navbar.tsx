@@ -26,7 +26,6 @@ export function Navbar() {
   const router = useRouter();
   const [copied, setCopied] = useState(false);
 
-  const walletCreationInProgress = userContext?.walletCreationInProgress;
   const isAuthenticated = userContext?.isAuthenticated;
   const publicKey = userContext?.solana?.address;
   console.log(userContext);

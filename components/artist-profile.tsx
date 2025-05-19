@@ -52,22 +52,29 @@ export function ArtistProfile({
   const [openWithdrawal, setOpenWithdrawal] = useState(false);
   const userContext = useUser() as ExtendedWeb3UserContextType;
 
-  const publicKey = new PublicKey(userContext?.solana?.address || "");
+  // Always call hooks in the same order!
+  const publicKey = userContext?.solana?.address
+    ? new PublicKey(userContext.solana.address)
+    : null;
   const balance = useSolBalance(publicKey);
 
-  const closeWithdrawModal = () => {
-    setOpenWithdrawal(false);
-  };
-  const openWithdrawModal = () => {
-    setOpenWithdrawal(true);
-  };
+  const closeWithdrawModal = () => setOpenWithdrawal(false);
+  const openWithdrawModal = () => setOpenWithdrawal(true);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(walletAddress).then(() => {
       setCopied(true);
-      setTimeout(() => setCopied(false), 2000); // Reset copied state after 2 seconds
+      setTimeout(() => setCopied(false), 2000);
     });
   };
+
+  if (!userContext?.solana?.address) {
+    return (
+      <div className="flex justify-center items-center min-h-[200px]">
+        <span>Loading wallet info...</span>
+      </div>
+    );
+  }
 
   return (
     <>
