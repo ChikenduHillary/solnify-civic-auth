@@ -28,7 +28,7 @@ export function Hero() {
             Collect NFTs
           </h1>
           <p className="text-lg text-gray-400 mb-10">
-            NFT Marketplace UI Created With Anima For Figma. Collect, Buy And
+            NFT Marketplace Collect, Buy And
             Sell Art From More Than 20k NFT Artists.
           </p>
           {userId ? (
