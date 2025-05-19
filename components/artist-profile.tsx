@@ -62,7 +62,10 @@ export function ArtistProfile({
   const openWithdrawModal = () => setOpenWithdrawal(true);
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(walletAddress).then(() => {
+    // Prefer the actual connected Solana address if available
+    const addressToCopy = userContext?.solana?.address;
+    if (!addressToCopy) return;
+    navigator.clipboard.writeText(addressToCopy).then(() => {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     });
@@ -126,7 +129,14 @@ export function ArtistProfile({
                 onClick={handleCopy}
               >
                 <Copy className="w-4 h-4 mr-2" />
-                {copied ? "Copied!" : "Copy Address"}
+                {copied
+                  ? "Copied!"
+                  : `${(userContext?.solana?.address || walletAddress).slice(
+                      0,
+                      4
+                    )}...${(userContext?.solana?.address || walletAddress).slice(
+                      -4
+                    )}`}
               </Button>
               <Button
                 variant="outline"
