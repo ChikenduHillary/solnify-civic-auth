@@ -33,12 +33,12 @@ export function Hero() {
           </p>
           {userId ? (
             <Link href={`/artist/${userId}`}>
-              <Button className="bg-purple-600 hover:bg-purple-700 mb-12">
+              <Button className="bg-purple hover:bg-purple-700 mb-12">
                 Profile
               </Button>
             </Link>
           ) : (
-            <Button className="bg-purple-600 hover:bg-purple-700 mb-12">
+            <Button className="bg-blue-600 hover:bg-purple-700 mb-12">
               Get Started
             </Button>
           )}
