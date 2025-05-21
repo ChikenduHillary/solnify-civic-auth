@@ -26,7 +26,6 @@ export function Navbar() {
   const router = useRouter();
   const [copied, setCopied] = useState(false);
 
-  const walletCreationInProgress = userContext?.walletCreationInProgress;
   const isAuthenticated = userContext?.isAuthenticated;
   const publicKey = userContext?.solana?.address;
   console.log(userContext);
@@ -48,7 +47,7 @@ export function Navbar() {
     const dbUser = useQuery(api.users.getUser, userId ? { userId } : "skip");
     console.log({ dbUser });
   } catch (error: any) {
-    if (error.message?.includes("User not found") && userId) {
+    if (error && userId) {
       router.push("/onboarding");
     } else {
       console.log("Error fetching user:", error.message || error);

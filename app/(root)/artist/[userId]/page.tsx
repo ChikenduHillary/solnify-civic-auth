@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { redirect, useParams } from "next/navigation";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Navbar } from "@/components/navbar";
@@ -33,17 +34,21 @@ export default function ArtistPage() {
   // Only fetch if userId exists, otherwise skip fetching
   const dbUser = useQuery(api.users.getUser, userId ? { userId } : "skip");
 
-  if (userId && !dbUser) {
-    redirect("/");
-  } else {
-  }
+  // Redirect on client if userId exists but dbUser is null (not found)
+  useEffect(() => {
+    if (userId && dbUser === null) {
+      redirect("/");
+    }
+  }, [userId, dbUser]);
 
   return (
     <div className="min-h-screen bg-background text-white">
       <Navbar />
 
       <main>
-        {dbUser ? (
+        {dbUser === undefined ? (
+          <ArtistProfileSkeleton />
+        ) : dbUser ? (
           <ArtistProfile
             name={dbUser.username || "Unknown Artist"}
             avatar={dbUser.profilePic || "/placeholder.svg"}
@@ -55,9 +60,7 @@ export default function ArtistPage() {
             bio={dbUser.bio || "No bio available."}
             walletAddress={"N/A"}
           />
-        ) : (
-          <ArtistProfileSkeleton />
-        )}
+        ) : null}
 
         <div className="px-4 md:px-8 py-8">
           <Tabs defaultValue="created" className="w-full">

@@ -18,6 +18,7 @@ import { PublicKey } from "@solana/web3.js";
 import { useSolBalance } from "@/helpers/getSolBalance";
 import { useUser } from "@civic/auth-web3/react";
 import { Web3UserContextType } from "@civic/auth-web3";
+import { ArtistProfileSkeleton } from "./artistProfileSkeleton";
 
 interface ProfileStats {
   volume: string;
@@ -52,22 +53,32 @@ export function ArtistProfile({
   const [openWithdrawal, setOpenWithdrawal] = useState(false);
   const userContext = useUser() as ExtendedWeb3UserContextType;
 
-  const publicKey = new PublicKey(userContext?.solana?.address || "");
+  // Always call hooks in the same order!
+  const publicKey = userContext?.solana?.address
+    ? new PublicKey(userContext.solana.address)
+    : null;
   const balance = useSolBalance(publicKey);
 
-  const closeWithdrawModal = () => {
-    setOpenWithdrawal(false);
-  };
-  const openWithdrawModal = () => {
-    setOpenWithdrawal(true);
-  };
+  const closeWithdrawModal = () => setOpenWithdrawal(false);
+  const openWithdrawModal = () => setOpenWithdrawal(true);
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(walletAddress).then(() => {
+    // Prefer the actual connected Solana address if available
+    const addressToCopy = userContext?.solana?.address;
+    if (!addressToCopy) return;
+    navigator.clipboard.writeText(addressToCopy).then(() => {
       setCopied(true);
-      setTimeout(() => setCopied(false), 2000); // Reset copied state after 2 seconds
+      setTimeout(() => setCopied(false), 2000);
     });
   };
+
+  if (!userContext?.solana?.address) {
+    return (
+      <div>
+        <ArtistProfileSkeleton />
+      </div>
+    );
+  }
 
   return (
     <>
@@ -119,7 +130,14 @@ export function ArtistProfile({
                 onClick={handleCopy}
               >
                 <Copy className="w-4 h-4 mr-2" />
-                {copied ? "Copied!" : "Copy Address"}
+                {copied
+                  ? "Copied!"
+                  : `${(userContext?.solana?.address || walletAddress).slice(
+                      0,
+                      4
+                    )}...${(
+                      userContext?.solana?.address || walletAddress
+                    ).slice(-4)}`}
               </Button>
               <Button
                 variant="outline"
