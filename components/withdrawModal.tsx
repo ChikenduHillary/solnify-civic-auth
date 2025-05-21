@@ -107,7 +107,7 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({ isOpen, onClose }) => {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/50 backdrop-blur-md z-50">
-      <div className="w-full max-w-sm mx-auto bg-gray-900/90 border border-white/10 rounded-lg p-6 shadow-xl relative">
+      <div className="w-full max-w-sm mx-auto bg-background border border-white/10 rounded-lg p-6 shadow-xl relative">
         <div
           className="absolute text-white right-5 top-2 text-[16px] cursor-pointer"
           onClick={onClose}
@@ -115,7 +115,7 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({ isOpen, onClose }) => {
           &times;
         </div>
         <div className="flex items-center gap-2 text-xl font-semibold text-white">
-          <ArrowDownToLine className="h-5 w-5 text-emerald-500" />
+          <ArrowDownToLine className="h-5 w-5 text-pink-500" />
           Withdraw SOL
         </div>
 
@@ -143,12 +143,12 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({ isOpen, onClose }) => {
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
                 placeholder="0.0"
-                className="w-full px-4 py-1.5 bg-gray-800/50 outline-[#008753] focus:outline-2 rounded-md text-white pr-20"
+                className="w-full px-4 py-1.5 bg-zinc-900 outline-pink-500 focus:outline-2 rounded-md text-white pr-20"
               />
               <button
                 type="button"
                 onClick={handleMaxAmount}
-                className="absolute right-0 top-0 h-full px-3 text-xs text-emerald-500 hover:text-emerald-400 font-semibold text-[10px]"
+                className="absolute right-0 top-0 h-full px-3 text-xs text-pink-500  hover:text-pink-400 font-semibold text-[10px]"
               >
                 MAX
               </button>
@@ -167,7 +167,7 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({ isOpen, onClose }) => {
               value={address}
               onChange={(e) => setAddress(e.target.value)}
               placeholder="Solana wallet address"
-              className="w-full px-4 py-1.5 bg-gray-800/50  outline-[#008753] focus:outline-2 border-white/10 rounded-md text-white"
+              className="w-full px-4 py-1.5 bg-zinc-900  outline-pink-500 focus:outline-2 border-white/10 rounded-md text-white"
             />
           </div>
         </div>
@@ -182,7 +182,7 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({ isOpen, onClose }) => {
           </button>
           <button
             onClick={handleWithdraw}
-            className="w-full sm:w-auto px-4 py-1.5 bg-emerald-600 hover:bg-emerald-700 rounded-md text-white flex items-center justify-center text-[13px] font-medium"
+            className="w-full sm:w-auto px-4 py-1.5 bg-pink-600 hover:bg-pink-700 rounded-md text-white flex items-center justify-center text-[13px] font-medium"
             disabled={isLoading}
           >
             <Wallet className="mr-2 h-4 w-4" />
