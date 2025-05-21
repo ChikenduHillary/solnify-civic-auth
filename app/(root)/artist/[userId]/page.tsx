@@ -8,6 +8,7 @@ import { ArtistProfile } from "@/components/artist-profile";
 import { NFTCard } from "@/components/nft-card";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
+import { ArtistProfileSkeleton } from "@/components/artistProfileSkeleton";
 
 // Mock data
 const nfts = [
@@ -34,6 +35,7 @@ export default function ArtistPage() {
 
   if (userId && !dbUser) {
     redirect("/");
+  } else {
   }
 
   return (
@@ -54,7 +56,7 @@ export default function ArtistPage() {
             walletAddress={"N/A"}
           />
         ) : (
-          <div>Loading artist profile...</div>
+          <ArtistProfileSkeleton />
         )}
 
         <div className="px-4 md:px-8 py-8">
